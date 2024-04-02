@@ -3,6 +3,7 @@
 
 #include "SooterCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 ASooterCharacter::ASooterCharacter()
@@ -15,6 +16,11 @@ ASooterCharacter::ASooterCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 300.f; // the camera follows at this distance behind the character 
 	CameraBoom->bUsePawnControlRotation = true; // rotate the arm based on the controller 
+
+	//Create a Follow Camera
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attached Follow Camera to end of CameraBoom
+	FollowCamera->bUsePawnControlRotation = false; //Camera does not rotate relative to arm
 	
 
 }
