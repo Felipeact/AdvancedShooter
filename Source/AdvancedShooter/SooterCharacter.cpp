@@ -2,12 +2,20 @@
 
 
 #include "SooterCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 ASooterCharacter::ASooterCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	//create a camera boom (pulls in towards character if there is a collision)
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->TargetArmLength = 300.f; // the camera follows at this distance behind the character 
+	CameraBoom->bUsePawnControlRotation = true; // rotate the arm based on the controller 
+	
 
 }
 
