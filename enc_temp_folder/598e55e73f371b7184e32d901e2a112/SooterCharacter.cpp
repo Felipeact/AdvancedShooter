@@ -74,7 +74,7 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	check(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveFoward", this, &ASooterCharacter::MoveFoward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ASooterCharacter::MoveRight	);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ASooterCharacter::MoveRight);
 
 }
 
