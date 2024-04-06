@@ -10,6 +10,7 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "Particles/ParticleSystem.h"
 #include "Animation/AnimMontage.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ASooterCharacter::ASooterCharacter() :
@@ -104,6 +105,18 @@ void ASooterCharacter::FireWeapon()
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
 		}
 
+		FHitResult FireHit;
+		const FVector Start{ SocketTransform.GetLocation()};
+		const FQuat Rotation{ SocketTransform.GetRotation() };
+		const FVector RotationAxis(Rotation.GetAxisX());
+		const FVector End{ Start + RotationAxis * 50'000.f };
+
+		GetWorld()->LineTraceSingleByChannel(FireHit, Start, End, ECollisionChannel::ECC_Visibility );
+		if (FireHit.bBlockingHit)
+		{
+			DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.f);
+			DrawDebugPoint(GetWorld(), FireHit.Location, 5.f, FColor::Red, false, 2.f);
+		}
 	}
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
