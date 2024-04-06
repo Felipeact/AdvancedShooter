@@ -9,6 +9,8 @@
 #include "Sound/SoundCue.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Particles/ParticleSystem.h"
+#include "Animation/AnimMontage.h"
+
 // Sets default values
 ASooterCharacter::ASooterCharacter() :
 	BaseTurnRate(45.f),
@@ -102,6 +104,13 @@ void ASooterCharacter::FireWeapon()
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
 		}
 
+	}
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if( AnimInstance && HipFireMontage) 
+	{
+		AnimInstance->Montage_Play(HipFireMontage);
+		AnimInstance->Montage_JumpToSection(FName("StartFire"));
 	}
 }
 
