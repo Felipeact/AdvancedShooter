@@ -30,18 +30,15 @@ jobs:
 
     - name: Build Unreal Engine project
       run: |
-        cd Felipeact/AdvancedShooter
-        /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh GenerateProjectFiles.sh -Project="AdvancedShooter.uproject" -Game
+        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh GenerateProjectFiles.sh -Project="AdvancedShooter.uproject" -Game
 
     - name: Build project
       run: |
-        cd Felipeact/AdvancedShooter
-        /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh Build.sh -Project="AdvancedShooter.uproject" -WaitMutex
+        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh Build.sh -Project="AdvancedShooter.uproject" -WaitMutex
 
     - name: Run tests
       run: |
-        cd Felipeact/AdvancedShooter
-        /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh RunUAT.sh -Project="AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
+        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh RunUAT.sh -Project="AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
 
   deploy:
     needs: build
