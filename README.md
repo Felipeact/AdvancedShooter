@@ -19,7 +19,7 @@ This Game covers a wide range of topics, including:
 - Level prototyping and design
 - And much more!
 
-## What i Learned
+## What i Learned!
 
 By creating this game along with some tutorials I learned
 
