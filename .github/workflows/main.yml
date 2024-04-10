@@ -1,0 +1,52 @@
+name: Unreal Engine 5 Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Unreal Engine prerequisites
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lib32stdc++6
+        sudo apt-get install -y lib32z1
+
+    - name: Download and extract Unreal Engine 5
+      uses: actions/download-artifact@v2
+      with:
+        name: UnrealEngine-5
+        path: /home/runner/UnrealEngine-5
+
+    - name: Build Unreal Engine project
+      run: |
+        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh GenerateProjectFiles.sh -Project="AdvancedShooter.uproject" -Game
+
+    - name: Build project
+      run: |
+        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh Build.sh -Project="AdvancedShooter.uproject" -WaitMutex
+
+    - name: Run tests
+      run: |
+        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh RunUAT.sh -Project="AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Archive built artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Built-Artifacts
+        path: Felipeact/AdvancedShooter
