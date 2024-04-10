@@ -28,28 +28,28 @@ jobs:
         name: UnrealEngine-5
         path: /home/runner/UnrealEngine-5
 
-    - name: Build Unreal Engine project
-      run: |
-        cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
-        ./RunMono.sh GenerateProjectFiles.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -Game
+  #   - name: Build Unreal Engine project
+  #     run: |
+  #       cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
+  #       ./RunMono.sh GenerateProjectFiles.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -Game
 
-    - name: Build project
-      run: |
-        cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
-        ./RunMono.sh Build.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -WaitMutex
+  #   - name: Build project
+  #     run: |
+  #       cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
+  #       ./RunMono.sh Build.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -WaitMutex
 
-    - name: Run tests
-      run: |
-        cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
-        ./RunMono.sh RunUAT.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
+  #   - name: Run tests
+  #     run: |
+  #       cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
+  #       ./RunMono.sh RunUAT.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Archive built artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: Built-Artifacts
-        path: Felipeact/AdvancedShooter
+  #   steps:
+  #   - name: Archive built artifacts
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: Built-Artifacts
+  #       path: Felipeact/AdvancedShooter
