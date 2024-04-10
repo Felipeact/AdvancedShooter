@@ -22,11 +22,11 @@ jobs:
         sudo apt-get install -y lib32stdc++6
         sudo apt-get install -y lib32z1
 
-    - name: Download and extract Unreal Engine 5
-      uses: actions/download-artifact@v2
-      with:
-        name: UnrealEngine-5
-        path: /home/runner/UnrealEngine-5
+    # - name: Download and extract Unreal Engine 5
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: UnrealEngine-5
+    #     path: /home/runner/UnrealEngine-5
 
   #   - name: Build Unreal Engine project
   #     run: |
