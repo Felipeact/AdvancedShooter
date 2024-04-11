@@ -108,7 +108,7 @@ void ASooterCharacter::FireWeapon()
 		}
 
 		FVector BeamEnd;
-		bool bBeamEnd = GetBeamEndLocation(SocketTransform.GetLocation(), BeamEnd); //Function create before tick AA
+		bool bBeamEnd = GetBeamEndLocation(SocketTransform.GetLocation(), BeamEnd); //Function create before tick 
 
 		if (bBeamEnd)
 		{
