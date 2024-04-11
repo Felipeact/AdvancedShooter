@@ -3,10 +3,10 @@ name: Unreal Engine 5 Build and Test
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -22,31 +22,34 @@ jobs:
         sudo apt-get install -y lib32stdc++6
         sudo apt-get install -y lib32z1
 
-    - name: Download and extract Unreal Engine 5
-      uses: actions/download-artifact@v2
-      with:
-        name: UnrealEngine-5
-        path: /home/runner/UnrealEngine-5
+    # - name: Download and extract Unreal Engine 5
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: UnrealEngine-5
+    #     path: /home/runner/UnrealEngine-5
 
-    - name: Build Unreal Engine project
-      run: |
-        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh GenerateProjectFiles.sh -Project="AdvancedShooter.uproject" -Game
+  #   - name: Build Unreal Engine project
+  #     run: |
+  #       cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
+  #       ./RunMono.sh GenerateProjectFiles.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -Game
 
-    - name: Build project
-      run: |
-        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh Build.sh -Project="AdvancedShooter.uproject" -WaitMutex
+  #   - name: Build project
+  #     run: |
+  #       cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
+  #       ./RunMono.sh Build.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -WaitMutex
 
-    - name: Run tests
-      run: |
-        cd Felipeact/AdvancedShooter/home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux/RunMono.sh RunUAT.sh -Project="AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
+  #   - name: Run tests
+  #     run: |
+  #       cd /home/runner/UnrealEngine-5/Engine/Build/BatchFiles/Linux
+  #       ./RunMono.sh RunUAT.sh -Project="Felipeact/AdvancedShooter/AdvancedShooter.uproject" -ScriptsForProject="YourTestScript" -Run
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Archive built artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: Built-Artifacts
-        path: Felipeact/AdvancedShooter
+  #   steps:
+  #   - name: Archive built artifacts
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: Built-Artifacts
+  #       path: Felipeact/AdvancedShooter

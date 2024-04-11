@@ -17,7 +17,6 @@ This Game covers a wide range of topics, including:
 - Advanced material creation and effects
 - Enemy AI and behavior trees
 - Level prototyping and design
-- And much more!
 
 ## What i Learned
 
