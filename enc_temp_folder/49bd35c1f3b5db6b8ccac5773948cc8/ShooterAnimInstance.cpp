@@ -43,7 +43,13 @@ void UShooterAnimInstance::UpdateAnimationProperties(float DeltaTime)
 		{
 			LastMovementOffsetYaw = MovementOffsetYaw;
 		}
-		
+		//FString OffsetMessage = FString::Printf(TEXT("Movement Offset Yaw %f"), MovementOffsetYaw);
+	
+		//if (GEngine)
+		//{
+			//GEngine->AddOnScreenDebugMessage(1, 0, FColor::White, OffsetMessage);
+			
+		//}
 	}
 }
 
