@@ -46,8 +46,6 @@ protected:
 	void AimingButtonPressed();
 	void AimingButtonReleased();
 
-	void CameraInterpZoom(float DeltaTime);
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -252,32 +252,26 @@ void ASooterCharacter::AimingButtonReleased()
 	bAiming = false;
 }
 
-void ASooterCharacter::CameraInterpZoom(float DeltaTime)
+// Called every frame
+void ASooterCharacter::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	//set  current camera field of view 
 	if (bAiming)
 	{
 		// interpolate to zoomed fov
 		CameraCurrentFov = FMath::FInterpTo(CameraCurrentFov, CameraZoomedFOV, DeltaTime, ZoomInterpSpeed);
 
-
+		
 	}
 	else
-	{
+	{	
 		// interpolate to default fov
 		CameraCurrentFov = FMath::FInterpTo(CameraCurrentFov, CameraDefaultFOV, DeltaTime, ZoomInterpSpeed);
 
 	}
 	GetFollowCamera()->SetFieldOfView(CameraCurrentFov);
-}
-
-// Called every frame
-void ASooterCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	// handle interpolation for zoom when aiming 
-	CameraInterpZoom(DeltaTime);
 }
 
 // Called to bind functionality to input
