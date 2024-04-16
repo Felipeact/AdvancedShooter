@@ -18,7 +18,7 @@ This Game covers a wide range of topics, including:
 - Enemy AI and behavior trees
 - Level prototyping and design
 
-## What i Learned
+## What i Learned?
 
 By creating this game along with some tutorials I learned
 
