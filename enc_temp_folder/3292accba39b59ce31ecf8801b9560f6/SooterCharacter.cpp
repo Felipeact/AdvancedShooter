@@ -108,16 +108,6 @@ void ASooterCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void ASooterCharacter::Turn(float Value)
-{
-
-}
-
-void ASooterCharacter::LookUp(float Value)
-{
-
-}
-
 void ASooterCharacter::FireWeapon()
 {
 	if (FireSound)
@@ -328,8 +318,8 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASooterCharacter::MoveRight	);
 	PlayerInputComponent->BindAxis("TurnRate", this, &ASooterCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ASooterCharacter::LookUpAtRate);
-	PlayerInputComponent->BindAxis("Turn", this, &ASooterCharacter::Turn);
-	PlayerInputComponent->BindAxis("LookUp", this, &ASooterCharacter::LookUp);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 
 	PlayerInputComponent->BindAction("Jump",IE_Pressed, this, &ACharacter::Jump);

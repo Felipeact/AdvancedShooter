@@ -37,19 +37,6 @@ protected:
 	*/
 	void LookUpAtRate(float Rate);
 
-	/*
-		Rotate controller based on mouse X movement
-		@param Value	The input value from mouse movement
-	*/
-	void Turn(float Value);
-
-
-	/*
-		Rotate controller based on mouse Y movement
-		@param Value	The input value from mouse movement
-	*/
-	void LookUp(float Value);
-
 	/* Called When the fire button is pressed */
 	void FireWeapon();
 
