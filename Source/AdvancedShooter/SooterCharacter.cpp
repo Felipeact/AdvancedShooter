@@ -22,8 +22,14 @@ ASooterCharacter::ASooterCharacter() :
 	HipLookUpRate(90.f),
 	AimingTurnRate(20.f),
 	AimingLookUpRate(20.f),
-	// Camera field of view values
+	// Mouse Look Sensitivity scale factors
+	MouseHipTurnRate(1.0f),
+	MouseHipLookUpRate(1.0f),
+	MouseAimingTurnRate(0.2f),
+	MouseAimingLookUpRate(0.2f),
+	//true when aiming
 	bAiming(false),
+	// Camera field of view values
 	CameraDefaultFOV(0.f), // Set in BeginPlay
 	CameraZoomedFOV(60.f),
 	CameraCurrentFov(0.f),
@@ -109,13 +115,33 @@ void ASooterCharacter::LookUpAtRate(float Rate)
 }
 
 void ASooterCharacter::Turn(float Value)
-{
+{	
+	float TurnScaleFactor{};
+	if (bAiming)
+	{
+		TurnScaleFactor = MouseAimingTurnRate;
+	}
+	else
+	{
+		TurnScaleFactor = MouseHipTurnRate;
+	}
 
+	AddControllerYawInput(Value * TurnScaleFactor);
 }
 
 void ASooterCharacter::LookUp(float Value)
 {
+	float LookUpScaleFactor{};
+	if (bAiming)
+	{
+		LookUpScaleFactor = MouseAimingLookUpRate;
+	}
+	else
+	{
+		LookUpScaleFactor = MouseHipLookUpRate;
+	}
 
+	AddControllerPitchInput(Value * LookUpScaleFactor);
 }
 
 void ASooterCharacter::FireWeapon()
