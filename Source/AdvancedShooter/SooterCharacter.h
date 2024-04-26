@@ -188,4 +188,7 @@ public:
 
 	FORCEINLINE bool GetAiming() const { return bAiming; }
 
+	UFUNCTION(BlueprintCallable)
+	float GetCrosshairSpreadMultiplier() const;
+
 };

@@ -351,6 +351,9 @@ void ASooterCharacter::Tick(float DeltaTime)
 	
 	// Change Look sensitive based on aimig
 	SetLookRates();
+
+	//Calculate crosshair spread multiplier
+	CalculateCrosshairSpread(DeltaTime);
 	
 
 
@@ -379,5 +382,10 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &ASooterCharacter::AimingButtonReleased);
 
 
+}
+
+float ASooterCharacter::GetCrosshairSpreadMultiplier() const
+{
+	return CrosshairSpreadMultiplier;
 }
 
