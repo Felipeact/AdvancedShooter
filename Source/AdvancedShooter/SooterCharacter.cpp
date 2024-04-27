@@ -33,7 +33,13 @@ ASooterCharacter::ASooterCharacter() :
 	CameraDefaultFOV(0.f), // Set in BeginPlay
 	CameraZoomedFOV(60.f),
 	CameraCurrentFov(0.f),
-	ZoomInterpSpeed(20.f)
+	ZoomInterpSpeed(20.f),
+	// Crosshair spread factor
+	CrosshairSpreadMultiplier(0.f),
+	CrosshairVelocityFactor(0.f),
+	CrosshairInAirFactor(0.f),
+	CrosshairAimFactor(0.f),
+	CrosshairShootingFactor(0.f)
 	
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -350,7 +356,20 @@ void ASooterCharacter::CalculateCrosshairSpread(float DeltaTime)
 		// Shrink the crosshair rapidly while on the ground
 		CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0.f, DeltaTime, 30.f);
 	}
-	CrosshairSpreadMultiplier = 0.5f + CrosshairVelocityFactor + CrosshairInAirFactor;
+
+	//Calculate crosshair aim factor
+	if (bAiming) // Are we aiming>
+	{	
+		// Shrink Crosshair a small amount very quickly
+		CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.6f, DeltaTime, 30.f);
+	}
+	else // Not aiming 
+	{	
+		//Spread crosshair back to normal very quickly
+		CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.f, DeltaTime, 30.f);
+	}
+
+	CrosshairSpreadMultiplier = 0.5f + CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor;
 }
 
 // Called every frame
