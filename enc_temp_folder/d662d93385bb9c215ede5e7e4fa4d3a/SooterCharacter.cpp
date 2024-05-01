@@ -230,7 +230,7 @@ void ASooterCharacter::FireWeapon()
 	if( AnimInstance && HipFireMontage) 
 	{
 		AnimInstance->Montage_Play(HipFireMontage);
-		AnimInstance->Montage_JumpToSection(FName("Start Fire"));
+		AnimInstance->Montage_JumpToSection(FName("StartFire"));
 	}
 
 	// Start bullet fire timer for crosshair
