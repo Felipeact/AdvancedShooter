@@ -470,7 +470,7 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("FireButton", IE_Pressed, this, &ASooterCharacter::FireButtonPressed);
-	PlayerInputComponent->BindAction("FireButton", IE_Pressed, this, &ASooterCharacter::FireButtonReleased);
+	PlayerInputComponent->BindAction("FireButton", IE_Released, this, &ASooterCharacter::FireButtonReleased);
 	
 	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &ASooterCharacter::AimingButtonPressed);
 	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &ASooterCharacter::AimingButtonReleased);
