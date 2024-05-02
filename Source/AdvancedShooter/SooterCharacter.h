@@ -71,6 +71,14 @@ protected:
 	UFUNCTION()
 	void FinishCrosshairBulletFire();
 
+	void FireButtonPressed();
+	void FireButtonReleased();
+
+	void StartFireTimer();
+
+	UFUNCTION()
+	void AutoFireReset();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -190,7 +198,17 @@ private:
 
 	FTimerHandle CrosshairShootTimer;
 
+	// Left Mouse button or right console trigger pressed
+	bool bFireButtonPressed;
 
+	// True when we can fire. F	alse when waiting for timer;
+	bool bShouldFire;
+
+	// Rate of automatic gun fire
+	float AutomaticFireRate;
+
+	// Sets a timer between gunshoots
+	FTimerHandle AutoFireTimer;
 
 public:
 	/* return camera boom subobject */
