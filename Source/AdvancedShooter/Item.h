@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class UBoxComponent;
+class USkeletalMeshComponent;
+
 UCLASS()
 class ADVANCEDSHOOTER_API AItem : public AActor
 {
@@ -22,5 +25,19 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	
+	//Skeletal mesh for the item
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* ItemMesh;
+
+	// Line Trace collides with box to show hud widgets
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* CollisionBox;
+
+
+
+public:
 
 };
