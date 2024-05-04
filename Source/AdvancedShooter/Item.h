@@ -8,6 +8,8 @@
 
 class UBoxComponent;
 class USkeletalMeshComponent;
+class UWidgetComponent;
+
 
 UCLASS()
 class ADVANCEDSHOOTER_API AItem : public AActor
@@ -35,6 +37,10 @@ private:
 	// Line Trace collides with box to show hud widgets
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* CollisionBox;
+
+	// Popup widget for when the player looks at the item
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* PickupWidget;
 
 
 
