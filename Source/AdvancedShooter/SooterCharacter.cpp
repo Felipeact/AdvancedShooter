@@ -46,9 +46,11 @@ ASooterCharacter::ASooterCharacter() :
 	ShootTimeDuration(0.05f),
 	bFiringBullet(false),
 	//Automatic fire variables
-	AutomaticFireRate(0.1f),
+	bFireButtonPressed(false),
 	bShouldFire(true),
-	bFireButtonPressed(false)
+	AutomaticFireRate(0.1f)
+	
+	
 
 
 	
@@ -246,60 +248,37 @@ void ASooterCharacter::FireWeapon()
 
 bool ASooterCharacter::GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation)
 {
-	// Get Current size of viewport
-	FVector2D ViewportSize;
-	if (GEngine && GEngine->GameViewport)
+	// Check for crosshair trace hit
+	FHitResult CrosshairHitResult;
+	bool bCrosshairHit = TraceUnderCrosshairs(CrosshairHitResult, OutBeamLocation);
+
+	if (bCrosshairHit)
 	{
-		GEngine->GameViewport->GetViewportSize(ViewportSize);
+		// Tentative beam location - still need to trace from gun
+		OutBeamLocation = CrosshairHitResult.Location;
+	}
+	else // no crosshair trace hit
+	{
+		// OutbeamLocation is the end location for the lane trace
 	}
 
-	//Get Screen space location of crosshair
-	FVector2D CrosshairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+	FHitResult WeaponTraceHit;
+	// Perfors second trace from gun barrel
 
-	FVector CrosshairWorldPosition;
-	FVector CrosshairWorldDirection;
+	const FVector WeaponTraceStart{ MuzzleSocketLocation };
+	const FVector StartToEnd{ OutBeamLocation - MuzzleSocketLocation };
+	const FVector WeaponTraceEnd{ MuzzleSocketLocation + StartToEnd * 1.25f};
+	
+	GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, WeaponTraceStart, WeaponTraceEnd, ECollisionChannel::ECC_Visibility);
 
-	//Get World position and direction of crosshairs
-	bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(this, 0),
-		CrosshairLocation, CrosshairWorldPosition, CrosshairWorldDirection);
-
-	if (bScreenToWorld) // was deprojection successful?
+	if (WeaponTraceHit.bBlockingHit) //Object between barrel and BeamEndPoint!
 	{
-		FHitResult ScreenTraceHit;
-		const FVector Start{ CrosshairWorldPosition };
-		const FVector End{ CrosshairWorldPosition + CrosshairWorldDirection * 50'000.f };
-
-
-		// Set Beam end point to line trace and point
-		OutBeamLocation = End;
-
-
-		//trace outward from crosshairs world location
-		GetWorld()->LineTraceSingleByChannel(ScreenTraceHit, Start, End, ECollisionChannel::ECC_Visibility);
-		if (ScreenTraceHit.bBlockingHit) // was there a trace hit?
-		{
-			// Beam enf point is now trace hit location
-			OutBeamLocation = ScreenTraceHit.Location;
-
-
-		}
-
-		// Perfotm a second trace, this time from the gun barrel 
-		FHitResult WeaponTraceHit;
-		const FVector WeaponTraceStart{ MuzzleSocketLocation };
-		const FVector WeaponTraceEnd{ OutBeamLocation };
-		GetWorld()->LineTraceSingleByChannel(WeaponTraceHit, WeaponTraceStart, WeaponTraceEnd, ECollisionChannel::ECC_Visibility);
-
-		if (WeaponTraceHit.bBlockingHit) //Object between barrel and BeamEndPoint!
-		{
-			OutBeamLocation = WeaponTraceHit.Location;
-		}
-
-		
+		OutBeamLocation = WeaponTraceHit.Location;
 		return true;
 	}
 
 	return false;
+
 }
 
 
@@ -436,7 +415,7 @@ void ASooterCharacter::AutoFireReset()
 	}
 }
 
-bool ASooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult)
+bool ASooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation)
 {
 
 	// Get Viewport Size
@@ -461,10 +440,13 @@ bool ASooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult)
 		//Trace from crosshair world location outward
 		const FVector Start{ CrosshairWorldPosition };
 		const FVector End{ Start + CrosshairWorldDirection * 50'000.f};
+		OutHitLocation = End;
+
 		GetWorld()->LineTraceSingleByChannel(OutHitResult, Start, End, ECollisionChannel::ECC_Visibility);
 
 		if (OutHitResult.bBlockingHit)
-		{
+		{	
+			OutHitLocation = OutHitResult.Location;
 			return true;
 		}
 	}
@@ -487,7 +469,8 @@ void ASooterCharacter::Tick(float DeltaTime)
 	CalculateCrosshairSpread(DeltaTime);
 
 	FHitResult ItemTraceResult;
-	TraceUnderCrosshairs(ItemTraceResult);
+	FVector HitLocation;
+	TraceUnderCrosshairs(ItemTraceResult, HitLocation);
 	if (ItemTraceResult.bBlockingHit)
 	{
 		AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor());
