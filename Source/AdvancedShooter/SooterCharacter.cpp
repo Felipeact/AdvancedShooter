@@ -48,7 +48,9 @@ ASooterCharacter::ASooterCharacter() :
 	//Automatic fire variables
 	bFireButtonPressed(false),
 	bShouldFire(true),
-	AutomaticFireRate(0.1f)
+	AutomaticFireRate(0.1f),
+	// item trace variables
+	bShouldTraceForItems(false)
 	
 	
 
@@ -454,6 +456,27 @@ bool ASooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& O
 	return false;
 }
 
+void ASooterCharacter::TraceForItems()
+{
+	if (bShouldTraceForItems)
+	{
+
+		FHitResult ItemTraceResult;
+		FVector HitLocation;
+		TraceUnderCrosshairs(ItemTraceResult, HitLocation);
+		if (ItemTraceResult.bBlockingHit)
+		{
+			AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor());
+			if (HitItem && HitItem->GetPickupWidget())
+			{
+				// Shoe Items's Pickup Widget
+				HitItem->GetPickupWidget()->SetVisibility(true);
+
+			}
+		}
+	}
+}
+
 // Called every frame
 void ASooterCharacter::Tick(float DeltaTime)
 {
@@ -467,20 +490,11 @@ void ASooterCharacter::Tick(float DeltaTime)
 
 	//Calculate crosshair spread multiplier
 	CalculateCrosshairSpread(DeltaTime);
+	
+	//Check OverlappedItemCount, then trace for items
+	TraceForItems();
 
-	FHitResult ItemTraceResult;
-	FVector HitLocation;
-	TraceUnderCrosshairs(ItemTraceResult, HitLocation);
-	if (ItemTraceResult.bBlockingHit)
-	{
-		AItem* HitItem = Cast<AItem>(ItemTraceResult.GetActor());
-		if (HitItem && HitItem->GetPickupWidget())
-		{
-			// Shoe Items's Pickup Widget
-			HitItem->GetPickupWidget()->SetVisibility(true);
-
-		}
-	}
+	
 	
 
 
@@ -515,5 +529,20 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 float ASooterCharacter::GetCrosshairSpreadMultiplier() const
 {
 	return CrosshairSpreadMultiplier;
+}
+
+void ASooterCharacter::IncrementOverlappedItemCount(int8 Amount)
+{
+	if (OverlappedItemCount + Amount <= 0)
+	{
+		OverlappedItemCount = 0;
+		bShouldTraceForItems = false;
+	}
+	else
+	{
+		OverlappedItemCount += Amount;
+		bShouldTraceForItems = true;
+	}
+
 }
 
