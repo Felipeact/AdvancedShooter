@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "SooterCharacter.generated.h"
 
+class AItem;
+
 UCLASS()
 class ADVANCEDSHOOTER_API ASooterCharacter : public ACharacter
 {
@@ -221,6 +223,10 @@ private:
 
 	// Number of overlapped AItems
 	int8 OverlappedItemCount;
+
+	// The AItem with hit las frame
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
+	AItem* TraceHitItemLastFrame;
 
 public:
 	/* return camera boom subobject */

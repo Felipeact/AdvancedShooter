@@ -14,7 +14,7 @@
 #include "DrawDebugHelpers.h"
 #include "Item.h"
 #include "Components/WidgetComponent.h"
-
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ASooterCharacter::ASooterCharacter() :
@@ -447,6 +447,7 @@ bool ASooterCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& O
 
 		GetWorld()->LineTraceSingleByChannel(OutHitResult, Start, End, ECollisionChannel::ECC_Visibility);
 
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, true, 0.5f, 0.5f);
 
 		if (OutHitResult.bBlockingHit)
 		{	
