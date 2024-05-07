@@ -9,7 +9,8 @@
 
 // Sets default values
 AItem::AItem():
-	ItemName(FString("Default"))
+	ItemName(FString("Default")),
+	ItemCount(0)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
