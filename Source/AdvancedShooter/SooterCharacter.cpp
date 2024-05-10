@@ -34,7 +34,7 @@ ASooterCharacter::ASooterCharacter() :
 	bAiming(false),
 	// Camera field of view values
 	CameraDefaultFOV(0.f), // Set in BeginPlay
-	CameraZoomedFOV(60.f),
+	CameraZoomedFOV(25.f),
 	CameraCurrentFov(0.f),
 	ZoomInterpSpeed(20.f),
 	// Crosshair spread factor

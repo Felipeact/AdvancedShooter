@@ -6,6 +6,19 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+
+UENUM(BlueprintType)
+enum class EItemRarity : uint8
+{
+	EIR_Damaged UMETA(DisplayName = "Damaged"),
+	EIR_Common UMETA(DisplayName = "Common"),
+	EIR_UnCommon UMETA(DisplayName = "UnCommon"),
+	EIR_Rare UMETA(DisplayName = "Rare"),
+	EIR_Legendary UMETA(DisplayName = "Lagendary"),
+
+	EIR_MAX UMETA(DisplayName = "DefaultMAX"),
+};
+
 class UBoxComponent;
 class USkeletalMeshComponent;
 class UWidgetComponent;
@@ -32,6 +45,9 @@ protected:
 	// Called when end overlapping AreaSphere
 	UFUNCTION()
 	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	// Sets the ActiveStars array of bools based on rarity
+	void SetActiveStars();
 
 public:	
 	// Called every frame
@@ -62,6 +78,14 @@ private:
 	// Item Count (Ammo, etc..)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	int32 ItemCount;
+
+	// iTEM rarity determines number of stars in Pick up widget  
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	EItemRarity ItemRarety;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	TArray<bool> ActiveStarts;
 
 public:
 
