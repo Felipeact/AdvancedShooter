@@ -7,6 +7,7 @@
 #include "SooterCharacter.generated.h"
 
 class AItem;
+class AWeapon;
 
 UCLASS()
 class ADVANCEDSHOOTER_API ASooterCharacter : public ACharacter
@@ -86,6 +87,8 @@ protected:
 
 	// Trace for items if overlappedItemCount is greater than 0
 	void TraceForItems();
+
+	void SpawnDefaultWeapon();
 
 public:	
 	// Called every frame
@@ -227,6 +230,15 @@ private:
 	// The AItem with hit las frame
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
 	AItem* TraceHitItemLastFrame;
+
+	// Currently equipped weapon
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	AWeapon* EquippedWeapon;
+
+
+	// Set this in blueprint for the default weapon class
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AWeapon> DefaultWeaponClass;
 
 public:
 	/* return camera boom subobject */

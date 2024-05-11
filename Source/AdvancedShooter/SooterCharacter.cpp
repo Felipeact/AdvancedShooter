@@ -14,6 +14,7 @@
 #include "DrawDebugHelpers.h"
 #include "Item.h"
 #include "Components/WidgetComponent.h"
+#include "Weapon.h"
 
 
 // Sets default values
@@ -95,6 +96,10 @@ void ASooterCharacter::BeginPlay()
 		CameraDefaultFOV = GetFollowCamera()->FieldOfView;
 		CameraCurrentFov = CameraCurrentFov;
 	}
+
+
+	// Spawn the default weapon and attach it to the mesh
+	SpawnDefaultWeapon();
 	
 }
 
@@ -495,6 +500,28 @@ void ASooterCharacter::TraceForItems()
 	{
 		// No longer overlapping any items, item last fram should not show widget
 		TraceHitItemLastFrame->GetPickupWidget()->SetVisibility(false);
+	}
+}
+
+void ASooterCharacter::SpawnDefaultWeapon()
+{
+	
+	// Check the default variable class
+	if (DefaultWeaponClass)
+	{
+		// Spawn the Weapon
+		AWeapon* DefaultWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass);
+		// Get the Hand Socket
+		const USkeletalMeshSocket* HandSocket = GetMesh()->GetSocketByName(FName("RightHandSocket"));
+
+		if (HandSocket)
+		{
+			// Attach the Weapon to the right hand socket
+			HandSocket->AttachActor(DefaultWeapon, GetMesh());
+		}
+
+		// Set EquippedWeapon to the newly spawned weapon
+		EquippedWeapon = DefaultWeapon;
 	}
 }
 
