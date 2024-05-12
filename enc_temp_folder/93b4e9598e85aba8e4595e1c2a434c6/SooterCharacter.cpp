@@ -549,15 +549,6 @@ void ASooterCharacter::DropWeapon()
 	}
 }
 
-void ASooterCharacter::SelectButtonPressed()
-{
-	DropWeapon();
-}
-
-void ASooterCharacter::SelectButtonReleased()
-{
-}
-
 
 // Called every frame
 void ASooterCharacter::Tick(float DeltaTime)
@@ -603,10 +594,7 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("FireButton", IE_Released, this, &ASooterCharacter::FireButtonReleased);
 	
 	PlayerInputComponent->BindAction("AimingButton", IE_Pressed, this, &ASooterCharacter::AimingButtonPressed);
-	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &ASooterCharacter::AimingButtonReleased);	
-	
-	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &ASooterCharacter::SelectButtonPressed);
-	PlayerInputComponent->BindAction("Select", IE_Released, this, &ASooterCharacter::SelectButtonReleased);
+	PlayerInputComponent->BindAction("AimingButton", IE_Released, this, &ASooterCharacter::AimingButtonReleased);
 
 
 }
