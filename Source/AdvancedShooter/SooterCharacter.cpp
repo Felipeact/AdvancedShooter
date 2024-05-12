@@ -540,6 +540,7 @@ void ASooterCharacter::EquipWeapon(AWeapon* WeaponToEquip)
 		}
 
 		EquippedWeapon = WeaponToEquip;
+		EquippedWeapon->SetItemState(EItemState::EIS_Equipped);
 	}
 }
 
