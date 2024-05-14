@@ -660,3 +660,13 @@ FVector ASooterCharacter::GetCameraInterpLocation()
 	return CameraWorldLocation + CameraFoward * CameraInterpDistance + FVector(0.f, 0.f, CameraInterpElevation);
 }
 
+void ASooterCharacter::GetPickUpItem(AItem* Item)
+{
+	AWeapon* Weapon = Cast<AWeapon>(Item);
+
+	if (Weapon)
+	{
+		SwapWeapon(Weapon);
+	}
+}
+
