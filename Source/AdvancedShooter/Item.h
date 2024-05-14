@@ -35,6 +35,7 @@ class UBoxComponent;
 class USkeletalMeshComponent;
 class UWidgetComponent;
 class USphereComponent;
+class UCurveFloat;
 
 
 UCLASS()
@@ -106,6 +107,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	EItemState ItemState;
+
+	// The curve asset to use for the item's z location when interping
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	UCurveFloat* ItemZCurve;
 
 public:
 
