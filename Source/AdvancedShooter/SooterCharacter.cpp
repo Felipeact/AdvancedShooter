@@ -54,7 +54,11 @@ ASooterCharacter::ASooterCharacter() :
 	bShouldFire(true),
 	AutomaticFireRate(0.1f),
 	// item trace variables
-	bShouldTraceForItems(false)
+	bShouldTraceForItems(false),
+	OverlappedItemCount(0),
+	// Camera Inter location variables
+	CameraInterpDistance(250.f),
+	CameraInterpElevation(65.f)
 	
 	
 
@@ -645,5 +649,14 @@ void ASooterCharacter::IncrementOverlappedItemCount(int8 Amount)
 		bShouldTraceForItems = true;
 	}
 
+}
+
+FVector ASooterCharacter::GetCameraInterpLocation()
+{
+	const FVector CameraWorldLocation{ FollowCamera->GetComponentLocation() };
+	const FVector CameraFoward{ FollowCamera->GetForwardVector() };
+
+	// Desired = CameraWorldLocation + Foward * a + Up * B
+	return CameraWorldLocation + CameraFoward * CameraInterpDistance + FVector(0.f, 0.f, CameraInterpElevation);
 }
 
