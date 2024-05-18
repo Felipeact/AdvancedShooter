@@ -560,8 +560,10 @@ void ASooterCharacter::SelectButtonPressed()
 {
 	if (TraceHitItem)
 	{
-		AWeapon* TraceHitWeapon = Cast<AWeapon>(TraceHitItem);
-		SwapWeapon(TraceHitWeapon);
+
+		TraceHitItem->StartItemCurve(this);
+		/*AWeapon* TraceHitWeapon = Cast<AWeapon>(TraceHitItem);
+		SwapWeapon(TraceHitWeapon);*/
 	}
 }
 
