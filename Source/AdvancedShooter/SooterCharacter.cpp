@@ -89,7 +89,7 @@ ASooterCharacter::ASooterCharacter() :
 	GetCharacterMovement()->bOrientRotationToMovement = false; // character moves in tehe direction of input
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);// ... at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->AirControl = 0.2f;
+	GetCharacterMovement()->AirControl = 5.0f;
 }
 
 // Called when the game starts or when spawned

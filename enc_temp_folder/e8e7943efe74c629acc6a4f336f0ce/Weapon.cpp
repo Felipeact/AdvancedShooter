@@ -15,11 +15,11 @@ void AWeapon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// keep the weapon upright
-	/*if (GetItemState() == EItemState::EIS_Falling && bFalling)
+	if (GetItemState() == EItemState::EIS_Falling && bFalling)
 	{
 		const FRotator MeshRotation{ 0.f, GetItemMesh()->GetComponentRotation().Yaw, 0.f };
 		GetItemMesh()->SetWorldRotation(MeshRotation, false, nullptr, ETeleportType::TeleportPhysics);
-	}*/
+	}
 
 }
 
@@ -36,7 +36,7 @@ void AWeapon::ThrowWeapon()
 
 	float RandomRotation{ 30.f };
 	ImpulseDirection = ImpulseDirection.RotateAngleAxis(RandomRotation, FVector(0.f, 0.f, 1.f));
-	ImpulseDirection *= 20'000.f;
+	ImpulseDirection *= 200.000f;
 
 	GetItemMesh()->AddImpulse(ImpulseDirection);
 
