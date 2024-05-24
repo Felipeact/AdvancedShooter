@@ -58,10 +58,7 @@ ASooterCharacter::ASooterCharacter() :
 	OverlappedItemCount(0),
 	// Camera Inter location variables
 	CameraInterpDistance(250.f),
-	CameraInterpElevation(65.f),
-	//Starting Ammo Amount
-	Starting9mmAmmo(85),
-	StartingARAmmo(120)
+	CameraInterpElevation(65.f)
 	
 	
 
@@ -109,10 +106,6 @@ void ASooterCharacter::BeginPlay()
 
 	// Spawn the default weapon and equip it
 	EquipWeapon(SpawnDefaultWeapon());
-
-
-	//
-	InitializeAmmoMap();
 	
 	
 }
@@ -187,7 +180,6 @@ void ASooterCharacter::LookUp(float Value)
 
 void ASooterCharacter::FireWeapon()
 {
-
 	if (FireSound)
 	{
 		UGameplayStatics::PlaySound2D(this, FireSound);
@@ -588,13 +580,6 @@ void ASooterCharacter::SwapWeapon(AWeapon* WeaponToSwap)
 
 }
 
-
-void ASooterCharacter::InitializeAmmoMap()
-{
-
-	AmmoMap.Add(EAmmoType::EAT_9mm, Starting9mmAmmo);
-	AmmoMap.Add(EAmmoType::EAT_AR, StartingARAmmo);
-}
 
 // Called every frame
 void ASooterCharacter::Tick(float DeltaTime)
