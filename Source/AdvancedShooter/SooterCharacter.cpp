@@ -611,7 +611,7 @@ void ASooterCharacter::InitializeAmmoMap()
 
 bool ASooterCharacter::WeaponHasAmmo()
 {
-	if (EquippedWeapon == nullptr) return;
+	if (EquippedWeapon == nullptr) return false;
 	
 	return EquippedWeapon->GetAmmo() > 0;
 }
