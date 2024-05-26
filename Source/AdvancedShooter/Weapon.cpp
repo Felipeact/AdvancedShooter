@@ -6,7 +6,8 @@
 AWeapon::AWeapon() :
 	ThrowWeaponTime(0.7f),
 	bFalling(false),
-	Ammo(0)
+	Ammo(0),
+	WeaponType(EWeaponType::EWT_SubMachineGun)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
