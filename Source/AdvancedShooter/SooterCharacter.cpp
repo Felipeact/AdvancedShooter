@@ -61,7 +61,9 @@ ASooterCharacter::ASooterCharacter() :
 	CameraInterpElevation(65.f),
 	//Starting Ammo Amount
 	Starting9mmAmmo(85),
-	StartingARAmmo(120)
+	StartingARAmmo(120),
+	//Combat Variables
+	CombatState(ECombatState::ECS_Unoccupied)
 	
 	
 
@@ -190,91 +192,29 @@ void ASooterCharacter::FireWeapon()
 
 	if (EquippedWeapon == nullptr) return;
 
-	if (FireSound)
+	if (CombatState != ECombatState::ECS_Unoccupied) return;
+
+	if (WeaponHasAmmo())
 	{
-		UGameplayStatics::PlaySound2D(this, FireSound);
-	}
+		PLayFireSound();
+		SendBullet();
+		PlayGunFireMontage();
 
-	const USkeletalMeshSocket* BarrelSocket = EquippedWeapon->GetItemMesh()->GetSocketByName("BarrelSocket");
-	if (BarrelSocket)
-	{
-		const FTransform SocketTransform = BarrelSocket->GetSocketTransform(EquippedWeapon->GetItemMesh());
-
-		if (MuzzleFlash)
-		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
-		}
-
-		FVector BeamEnd;
-		bool bBeamEnd = GetBeamEndLocation(SocketTransform.GetLocation(), BeamEnd); //Function create before tick AA
-
-		if (bBeamEnd)
-		{
-			//Spawn Impact after updatind beam end point
-			if (ImpactParticles)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, BeamEnd);
-			}
-
-			if (BeamParticles)
-			{
-				UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
-				if (Beam)
-				{
-					Beam->SetVectorParameter(FName("Target"), BeamEnd);
-				}
-			}
-		}
-
-
-		/*FHitResult FireHit;
-		const FVector Start{ SocketTransform.GetLocation()};
-		const FQuat Rotation{ SocketTransform.GetRotation() };
-		const FVector RotationAxis(Rotation.GetAxisX());
-		const FVector End{ Start + RotationAxis * 50'000.f };
-
-		FVector BeamEndPoint{ End };
-
-		GetWorld()->LineTraceSingleByChannel(FireHit, Start, End, ECollisionChannel::ECC_Visibility );
-		if (FireHit.bBlockingHit)
-		{
-			//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.f);
-			//DrawDebugPoint(GetWorld(), FireHit.Location, 5.f, FColor::Red, false, 2.f);
-			
-			BeamEndPoint = FireHit.Location;
-
-			if (ImpactParticles)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, FireHit.Location);
-			}
-		}
-
-		if (BeamParticles)
-		{
-			UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
-			if (Beam)
-			{
-				Beam->SetVectorParameter(FName("Target"), BeamEndPoint);
-			}
-		}
-		*/
-	}
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if( AnimInstance && HipFireMontage) 
-	{
-		AnimInstance->Montage_Play(HipFireMontage);
-		AnimInstance->Montage_JumpToSection(FName("Start Fire"));
-	}
-
-	// Start bullet fire timer for crosshair
-	StartCrosshairBulletFire();
-
-	if (EquippedWeapon)
-	{	
 		//Subtract 1 from the weapon's Ammo
 		EquippedWeapon->DecrementAmmo();
+
+		StartFireTimer();
+		// Start bullet fire timer for crosshair
+		StartCrosshairBulletFire();
+
 	}
+
+	
+
+	
+
+
+	
 }
 
 bool ASooterCharacter::GetBeamEndLocation(const FVector& MuzzleSocketLocation, FVector& OutBeamLocation)
@@ -420,10 +360,7 @@ void ASooterCharacter::FireButtonPressed()
 {
 
 	bFireButtonPressed = true;
-	if (WeaponHasAmmo())
-	{
-		StartFireTimer();
-	}
+	FireWeapon();
 }
 
 void ASooterCharacter::FireButtonReleased()
@@ -433,23 +370,25 @@ void ASooterCharacter::FireButtonReleased()
 
 void ASooterCharacter::StartFireTimer()
 {
-	if (bShouldFire)
-	{
-		FireWeapon();
-		bShouldFire = false;
-		GetWorldTimerManager().SetTimer(AutoFireTimer, this, &ASooterCharacter::AutoFireReset, AutomaticFireRate);
-	}
+	CombatState = ECombatState::ECS_FireTimerInProgress;
+	GetWorldTimerManager().SetTimer(AutoFireTimer, this, &ASooterCharacter::AutoFireReset, AutomaticFireRate);
+	
 }
 
 void ASooterCharacter::AutoFireReset()
 {
+	CombatState = ECombatState::ECS_Unoccupied;
+
 	if (WeaponHasAmmo())
 	{
-		bShouldFire = true;
 		if (bFireButtonPressed)
 		{
-			StartFireTimer();
+			FireWeapon();
 		}
+	}
+	else
+	{
+		// Reload Weapon
 	}
 }
 
@@ -616,6 +555,63 @@ bool ASooterCharacter::WeaponHasAmmo()
 	if (EquippedWeapon == nullptr) return false;
 	
 	return EquippedWeapon->GetAmmo() > 0;
+}
+
+void ASooterCharacter::PLayFireSound()
+{
+	// Play Fire Sound
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySound2D(this, FireSound);
+	}
+}
+
+void ASooterCharacter::SendBullet()
+{
+	// Send Bullet 
+	const USkeletalMeshSocket* BarrelSocket = EquippedWeapon->GetItemMesh()->GetSocketByName("BarrelSocket");
+	if (BarrelSocket)
+	{
+		const FTransform SocketTransform = BarrelSocket->GetSocketTransform(EquippedWeapon->GetItemMesh());
+
+		if (MuzzleFlash)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+		}
+
+		FVector BeamEnd;
+		bool bBeamEnd = GetBeamEndLocation(SocketTransform.GetLocation(), BeamEnd); //Function create before tick AA
+
+		if (bBeamEnd)
+		{
+			//Spawn Impact after updatind beam end point
+			if (ImpactParticles)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, BeamEnd);
+			}
+
+			if (BeamParticles)
+			{
+				UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BeamParticles, SocketTransform);
+				if (Beam)
+				{
+					Beam->SetVectorParameter(FName("Target"), BeamEnd);
+				}
+			}
+		}
+	}
+}
+
+void ASooterCharacter::PlayGunFireMontage()
+{
+
+	// Play Hip Fire Montage
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && HipFireMontage)
+	{
+		AnimInstance->Montage_Play(HipFireMontage);
+		AnimInstance->Montage_JumpToSection(FName("Start Fire"));
+	}
 }
 
 // Called every frame
