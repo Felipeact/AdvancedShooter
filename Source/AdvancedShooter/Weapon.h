@@ -46,6 +46,10 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapom Properties", meta = (AllowPrivateAccess = "true"))
 	int32 Ammo;
 
+	// Maximun Weapon ammo
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapom Properties", meta = (AllowPrivateAccess = "true"))
+	int32 MagazineCapacity;
+
 	// The Type of weapon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapom Properties", meta = (AllowPrivateAccess = "true"))
 	EWeaponType WeaponType;
@@ -63,6 +67,7 @@ public:
 	void ThrowWeapon();
 
 	FORCEINLINE int32 GetAmmo() const { return Ammo; }
+	FORCEINLINE int32 GetMagazineCapacity() const { return MagazineCapacity; }
 
 
 	// Called from Character class when firing weapon
@@ -72,4 +77,6 @@ public:
 	FORCEINLINE EWeaponType GetWeapontype() const { return WeaponType; }
 	FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
 	FORCEINLINE FName GetReloadMontageSection() const { return ReloadMontageSection; }
+
+	void ReloadAmmo(int32 Amount);
 };

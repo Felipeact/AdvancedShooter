@@ -605,7 +605,7 @@ void ASooterCharacter::SendBullet()
 void ASooterCharacter::PlayGunFireMontage()
 {
 
-	// Play Hip Fire Montage
+	// Play Hip Fire Montagef
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && HipFireMontage)
 	{
@@ -640,9 +640,38 @@ void ASooterCharacter::ReloadWeapon()
 
 void ASooterCharacter::FinishReloading()
 {
-	// Todo: update ammoMap
-
+	
+	// update the combat state 
 	CombatState = ECombatState::ECS_Unoccupied;
+	
+	if (EquippedWeapon) return;
+
+	const EAmmoType AmmoType = EquippedWeapon->GetAmmoType();
+
+	// update the AmmoMap
+	if (AmmoMap.Contains(AmmoType))
+	{	
+		// Amount of ammo the Character is carrying of the Equipped Weapon Type
+		int32 CarriedAmmo = AmmoMap[AmmoType];
+
+		// Space left in the magazine of the equippedWeapon
+		const int32 MagEmptySpace = EquippedWeapon->GetMagazineCapacity() - EquippedWeapon->GetAmmo();
+
+		if (MagEmptySpace > CarriedAmmo)
+		{
+			// Reload the megazine with all the ammo we are carrying
+			EquippedWeapon->ReloadAmmo(CarriedAmmo);
+			CarriedAmmo = 0;
+			AmmoMap.Add(AmmoType, CarriedAmmo);
+		}
+		else
+		{
+			// fill the magazine
+			EquippedWeapon->ReloadAmmo(MagEmptySpace);
+			CarriedAmmo -= MagEmptySpace;
+			AmmoMap.Add(AmmoType, CarriedAmmo);
+		}
+	}
 }
 
 bool ASooterCharacter::CarryingAmmo()
