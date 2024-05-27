@@ -622,22 +622,18 @@ void ASooterCharacter::ReloadButtonPressed()
 void ASooterCharacter::ReloadWeapon()
 {
 	if (CombatState != ECombatState::ECS_Unoccupied) return;
+	if (EquippedWeapon == nullptr) return;
+	
 
-	// Do we have ammo off the correct type?
-	// TO DO: Create function bool Carrying ammo(
-
-	if (true) // replace with Carrying ammo
+	if (CarryingAmmo())
 	{	
 
-		// TODO	: create an enum for weapon type
-		//TODO: switch on EquippedWeapon->WeaponType
-		FName MontageSection(TEXT("Reload SMG"));
-
+		CombatState = ECombatState::ECS_Reloading;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		if (AnimInstance && ReloadMontage)
 		{
 			AnimInstance->Montage_Play(ReloadMontage);
-			AnimInstance->Montage_JumpToSection(MontageSection);
+			AnimInstance->Montage_JumpToSection(EquippedWeapon->GetReloadMontageSection());
 		}
 	}
 }
@@ -647,6 +643,20 @@ void ASooterCharacter::FinishReloading()
 	// Todo: update ammoMap
 
 	CombatState = ECombatState::ECS_Unoccupied;
+}
+
+bool ASooterCharacter::CarryingAmmo()
+{
+	if (EquippedWeapon) return false;
+
+	EAmmoType AmmoType = EquippedWeapon->GetAmmoType();
+
+	if (AmmoMap.Contains(AmmoType))
+	{
+		return AmmoMap[AmmoType] > 0;
+	}
+
+	return false;
 }
 
 // Called every frame

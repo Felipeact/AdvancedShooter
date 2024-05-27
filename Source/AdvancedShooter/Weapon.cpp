@@ -7,7 +7,9 @@ AWeapon::AWeapon() :
 	ThrowWeaponTime(0.7f),
 	bFalling(false),
 	Ammo(0),
-	WeaponType(EWeaponType::EWT_SubMachineGun)
+	WeaponType(EWeaponType::EWT_SubMachineGun),
+	AmmoType(EAmmoType::EAT_9mm),
+	ReloadMontageSection(FName(TEXT("Reload SMG")))
 {
 	PrimaryActorTick.bCanEverTick = true;
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Item.h"
+#include "AmmoType.h"
 #include "Weapon.generated.h"
 
 UENUM(BlueprintType)
@@ -49,6 +50,14 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapom Properties", meta = (AllowPrivateAccess = "true"))
 	EWeaponType WeaponType;
 
+	// The type pf ammo for this weapon
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapom Properties", meta = (AllowPrivateAccess = "true"))
+	EAmmoType AmmoType;
+
+	// FName for the reload montage section
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapom Properties", meta = (AllowPrivateAccess = "true"))
+	FName ReloadMontageSection;
+
 public:
 	// Adds an inpukse to the weapon
 	void ThrowWeapon();
@@ -59,5 +68,8 @@ public:
 	// Called from Character class when firing weapon
 	void DecrementAmmo();
 
+	//Geters 
 	FORCEINLINE EWeaponType GetWeapontype() const { return WeaponType; }
+	FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
+	FORCEINLINE FName GetReloadMontageSection() const { return ReloadMontageSection; }
 };
