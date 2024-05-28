@@ -644,7 +644,7 @@ void ASooterCharacter::FinishReloading()
 	// update the combat state 
 	CombatState = ECombatState::ECS_Unoccupied;
 	
-	if (EquippedWeapon) return;
+	if (EquippedWeapon == nullptr) return;
 
 	const EAmmoType AmmoType = EquippedWeapon->GetAmmoType();
 
@@ -676,7 +676,7 @@ void ASooterCharacter::FinishReloading()
 
 bool ASooterCharacter::CarryingAmmo()
 {
-	if (EquippedWeapon) return false;
+	if (EquippedWeapon == nullptr) return false;
 
 	EAmmoType AmmoType = EquippedWeapon->GetAmmoType();
 
