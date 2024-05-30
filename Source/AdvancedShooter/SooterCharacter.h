@@ -142,6 +142,16 @@ protected:
 	// Checks to see if we have ammo of the EquippedWeapo's ammo type
 	bool CarryingAmmo();
 
+	// Called from animation blueprint with grabclip notify
+	UFUNCTION(BlueprintCallable)
+	void GrabClip();
+
+	// Called from animation blueprint with releaseclip notify
+	UFUNCTION(BlueprintCallable)
+	void ReleaseClip();
+
+	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -326,6 +336,14 @@ private:
 	// Montage for reloading animations
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Combat, meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* ReloadMontage;
+
+	// Transform of the clip when we first grab the clip during reloading
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	FTransform	ClipTransform;
+
+	// Scene component to attach to the Character hand during reloading 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	USceneComponent* HandSceneComponent;
 
 
 public:
