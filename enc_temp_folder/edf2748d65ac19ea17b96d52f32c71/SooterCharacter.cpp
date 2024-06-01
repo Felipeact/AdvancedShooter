@@ -803,12 +803,6 @@ FVector ASooterCharacter::GetCameraInterpLocation()
 
 void ASooterCharacter::GetPickUpItem(AItem* Item)
 {
-
-	if (Item->GetPickUpSound())
-	{
-		UGameplayStatics::PlaySound2D(this, Item->GetEquipSound());
-	}
-
 	AWeapon* Weapon = Cast<AWeapon>(Item);
 
 	if (Weapon)

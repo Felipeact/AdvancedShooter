@@ -37,6 +37,7 @@ class UWidgetComponent;
 class USphereComponent;
 class UCurveFloat;
 class ASooterCharacter;
+class USoundCue;
 
 
 UCLASS()
@@ -154,6 +155,18 @@ private:
 	//curve used to scale the item when interping
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
 	UCurveFloat* ItemScaleCurve;
+	
+
+	// Sound played when Item is picked up
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	USoundCue* PickUpSound;
+	
+	// Sound played when Item is equipped
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Properties", meta = (AllowPrivateAccess = "true"))
+	USoundCue* EquipSound;
+
+
+
 
 public:
 
@@ -167,6 +180,10 @@ public:
 	void SetItemState(EItemState State);
 
 	FORCEINLINE USkeletalMeshComponent* GetItemMesh() const { return ItemMesh;  }
+
+	FORCEINLINE USoundCue* GetPickUpSound() const { return PickUpSound; }
+
+	FORCEINLINE USoundCue* GetEquipSound() const { return EquipSound; }
 
 
 	//Called from the AShooterCharacter class
