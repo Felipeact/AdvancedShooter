@@ -67,10 +67,4 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turn in Place", meta = (AllowPrivateAccess = "true"))
 	float RootYawOffset;
 
-	//Rotation Curve Value this frame
-	float RotationCurve;
-
-	//Rotation Curve Value last frame this frame
-	float RotationCurveLastFrame;
-
 };
