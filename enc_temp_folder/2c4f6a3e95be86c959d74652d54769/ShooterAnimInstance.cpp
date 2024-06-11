@@ -96,7 +96,7 @@ void UShooterAnimInstance::TurnInPlace()
 
 	Pitch = ShooterCharacter->GetBaseAimRotation().Pitch;
 
-	if (Speed > 0 || bIsInAir)
+	if (Speed > 0)
 	{
 		RootYawOffset = 0.f;
 		CharacterYaw = ShooterCharacter->GetActorRotation().Yaw;
