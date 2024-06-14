@@ -102,11 +102,11 @@ private:
 	EOffsetState OffsetState;
 
 	// Character Yaw this frame
-	FRotator CharacterRotation;
+	float CharacterYaw;
 
 
 	//Characater yaw last frame
-	FRotator CharacterRotationYawLastFrame;
+	float CharacterYawLastFrame;
 
 
 	// Yaw delta used for leaning in the running blend space
