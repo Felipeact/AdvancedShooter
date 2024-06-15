@@ -721,14 +721,6 @@ void ASooterCharacter::ReleaseClip()
 
 }
 
-void ASooterCharacter::CrouchButtonPressed()
-{
-	if (!GetCharacterMovement()->IsFalling())
-	{
-		bCrouching = !bCrouching;
-	}
-}
-
 // Called every frame
 void ASooterCharacter::Tick(float DeltaTime)
 {
@@ -779,8 +771,6 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Select", IE_Released, this, &ASooterCharacter::SelectButtonReleased);
 
 	PlayerInputComponent->BindAction("ReloadButton", IE_Pressed, this, &ASooterCharacter::ReloadButtonPressed);
-	
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASooterCharacter::CrouchButtonPressed);
 }
 
 float ASooterCharacter::GetCrosshairSpreadMultiplier() const

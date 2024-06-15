@@ -150,8 +150,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void ReleaseClip();
 
-	void CrouchButtonPressed();
-
 	
 
 public:	
