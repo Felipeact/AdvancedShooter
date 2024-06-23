@@ -149,40 +149,43 @@ void UShooterAnimInstance::TurnInPlace()
 			bTurningInPlace = false;
 		}
 
-		if (bTurningInPlace)
+		
+	}
+	//Set the recoil weight
+
+	if (bTurningInPlace)
+	{
+		if (bReloading)
+		{
+			RecoilWeight = 1.f;
+		}
+		else
+		{
+			RecoilWeight = 0.f;
+		}
+	}
+	else // Not turning in place
+	{
+		if (bCrouching)
 		{
 			if (bReloading)
 			{
 				RecoilWeight = 1.f;
 			}
-			else 
+			else
 			{
-				RecoilWeight = 0.f;
+				RecoilWeight = 0.1f;
 			}
 		}
-		else // Not turning in place
+		else
 		{
-			if (bCrouching)
+			if (bAiming || bReloading)
 			{
-				if (bReloading)
-				{
-					RecoilWeight = 1.f;
-				}
-				else
-				{
-					RecoilWeight = 0.1f;
-				}
+				RecoilWeight = 1.f;
 			}
 			else
 			{
-				if (bAiming || bReloading)
-				{
-					RecoilWeight = 1.f;
-				}
-				else
-				{
-					RecoilWeight = 0.f;
-				}
+				RecoilWeight = 0.f;
 			}
 		}
 	}

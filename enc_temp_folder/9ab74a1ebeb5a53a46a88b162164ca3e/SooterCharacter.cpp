@@ -746,7 +746,6 @@ void ASooterCharacter::Jump()
 	if (bCrouching)
 	{
 		bCrouching = false;
-		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
 	}
 	else
 	{
