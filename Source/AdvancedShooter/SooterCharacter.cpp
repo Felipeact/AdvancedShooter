@@ -17,6 +17,7 @@
 #include "Weapon.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 
 
 // Sets default values
@@ -66,7 +67,11 @@ ASooterCharacter::ASooterCharacter() :
 	CombatState(ECombatState::ECS_Unoccupied),
 	bCrouching(false),
 	BaseMovementSpeed(650.f),
-	CrouchMovementSpeed(300.f)
+	CrouchMovementSpeed(300.f),
+	StandingCapsuleHalfHeight(88.f),
+	CrouchingCapsuleHalfHeight(44.f),
+	BaseGroundFriction(2.f),
+	CrouchingGroundFriction(100.f)
 	
 	
 
@@ -81,7 +86,7 @@ ASooterCharacter::ASooterCharacter() :
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 300.f; // the camera follows at this distance behind the character 
 	CameraBoom->bUsePawnControlRotation = true; // rotate the arm based on the controller 
-	CameraBoom->SocketOffset = FVector(0.f, 50.f, 50.f);
+	CameraBoom->SocketOffset = FVector(0.f, 50.f, 45.f);
 
 	//Create a Follow Camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -734,10 +739,12 @@ void ASooterCharacter::CrouchButtonPressed()
 	if (bCrouching)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
+		GetCharacterMovement()->GroundFriction = CrouchingGroundFriction;
 	}
 	else 
 	{
 		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+		GetCharacterMovement()->GroundFriction = BaseGroundFriction;
 	}
 }
 
@@ -752,6 +759,28 @@ void ASooterCharacter::Jump()
 	{
 		ACharacter::Jump();
 	}
+}
+
+void ASooterCharacter::InterpCapsuleHalfHeight(float DeltaTime)
+{
+	float TargetCapsuleHalfHeight{};
+	if (bCrouching)
+	{
+		TargetCapsuleHalfHeight = CrouchingCapsuleHalfHeight;
+	}
+	else
+	{
+		TargetCapsuleHalfHeight = StandingCapsuleHalfHeight;
+	}
+	const float InterpHalfHeight{ FMath::FInterpTo(GetCapsuleComponent()->GetScaledCapsuleHalfHeight(), TargetCapsuleHalfHeight, DeltaTime, 20.f )};
+
+
+	//negative value is crouching, positive is standing
+	const float DeltaCapsuleHalfHeight{ InterpHalfHeight - GetCapsuleComponent()->GetScaledCapsuleHalfHeight() };
+	const FVector MeshOffset{ 0.f, 0.f, -DeltaCapsuleHalfHeight };
+	GetMesh()->AddLocalOffset(MeshOffset);
+
+	GetCapsuleComponent()->SetCapsuleHalfHeight(InterpHalfHeight);
 }
 
 // Called every frame
@@ -771,7 +800,8 @@ void ASooterCharacter::Tick(float DeltaTime)
 	//Check OverlappedItemCount, then trace for items
 	TraceForItems();
 
-	
+	//Interpolate the capsule half height based on crouching/standing
+	InterpCapsuleHalfHeight(DeltaTime);
 	
 
 
