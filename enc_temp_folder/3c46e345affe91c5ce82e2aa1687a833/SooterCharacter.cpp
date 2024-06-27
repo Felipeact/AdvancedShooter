@@ -32,13 +32,13 @@ ASooterCharacter::ASooterCharacter() :
 	// Mouse Look Sensitivity scale factors
 	MouseHipTurnRate(1.0f),
 	MouseHipLookUpRate(1.0f),
-	MouseAimingTurnRate(0.6f),
-	MouseAimingLookUpRate(0.6f),
+	MouseAimingTurnRate(0.2f),
+	MouseAimingLookUpRate(0.2f),
 	//true when aiming
 	bAiming(false),
 	// Camera field of view values
 	CameraDefaultFOV(0.f), // Set in BeginPlay
-	CameraZoomedFOV(25.f),
+	CameraZoomedFOV(35.f),
 	CameraCurrentFov(0.f),
 	ZoomInterpSpeed(20.f),
 	// Crosshair spread factor

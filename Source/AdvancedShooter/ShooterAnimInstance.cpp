@@ -21,8 +21,8 @@ UShooterAnimInstance::UShooterAnimInstance() :
 	OffsetState(EOffsetState::EOS_Hip),
 	CharacterRotation(FRotator(0.f)),
 	CharacterRotationYawLastFrame(FRotator(0.f)),
-	RecoilWeight(1.f),
 	YawDelta(0.f),
+	RecoilWeight(1.f),
 	bTurningInPlace(false)
 {
 
