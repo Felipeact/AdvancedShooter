@@ -270,11 +270,16 @@ bool ASooterCharacter::GetBeamEndLocation(const FVector& MuzzleSocketLocation, F
 void ASooterCharacter::AimingButtonPressed()
 {
 	bAiming = true;
+	GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
 }
 
 void ASooterCharacter::AimingButtonReleased()
 {
 	bAiming = false;
+	if (!bCrouching)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+	}
 }
 
 void ASooterCharacter::CameraInterpZoom(float DeltaTime)
