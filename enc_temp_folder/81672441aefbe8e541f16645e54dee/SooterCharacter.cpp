@@ -71,8 +71,7 @@ ASooterCharacter::ASooterCharacter() :
 	StandingCapsuleHalfHeight(88.f),
 	CrouchingCapsuleHalfHeight(44.f),
 	BaseGroundFriction(2.f),
-	CrouchingGroundFriction(100.f),
-	bAimingButtonPressed(false)
+	CrouchingGroundFriction(100.f)
 	
 	
 
@@ -270,17 +269,17 @@ bool ASooterCharacter::GetBeamEndLocation(const FVector& MuzzleSocketLocation, F
 
 void ASooterCharacter::AimingButtonPressed()
 {
-	bAimingButtonPressed = true;
-	if (CombatState != ECombatState::ECS_Reloading)
-	{
-		Aim();
-	}
+	bAiming = true;
+	GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
 }
 
 void ASooterCharacter::AimingButtonReleased()
 {
-	bAimingButtonPressed = false;
-	StopAiming();
+	bAiming = false;
+	if (!bCrouching)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
+	}
 }
 
 void ASooterCharacter::CameraInterpZoom(float DeltaTime)
@@ -643,20 +642,13 @@ void ASooterCharacter::ReloadButtonPressed()
 }
 
 void ASooterCharacter::ReloadWeapon()
-{	
+{
 	if (CombatState != ECombatState::ECS_Unoccupied) return;
-
-	
 	if (EquippedWeapon == nullptr) return;
 	
 
 	if (CarryingAmmo() && !EquippedWeapon->ClipIsFull())
 	{	
-
-		if (bAiming)
-		{
-			StopAiming();
-		}
 
 		CombatState = ECombatState::ECS_Reloading;
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -673,11 +665,6 @@ void ASooterCharacter::FinishReloading()
 	
 	// update the combat state 
 	CombatState = ECombatState::ECS_Unoccupied;
-
-	if (bAimingButtonPressed)
-	{
-		Aim();
-	}
 	
 	if (EquippedWeapon == nullptr) return;
 
@@ -799,21 +786,6 @@ void ASooterCharacter::InterpCapsuleHalfHeight(float DeltaTime)
 	GetMesh()->AddLocalOffset(MeshOffset);
 
 	GetCapsuleComponent()->SetCapsuleHalfHeight(InterpHalfHeight);
-}
-
-void ASooterCharacter::Aim()
-{
-	bAiming = true;
-	GetCharacterMovement()->MaxWalkSpeed = CrouchMovementSpeed;
-}
-
-void ASooterCharacter::StopAiming()
-{
-	bAiming = false;
-	if (!bCrouching)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = BaseMovementSpeed;
-	}
 }
 
 // Called every frame
