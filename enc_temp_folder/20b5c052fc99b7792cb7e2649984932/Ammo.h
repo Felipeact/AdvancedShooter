@@ -23,10 +23,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-
-	// override of SetItemProperties so we can set AmmoMesh properties
-	virtual void SetItemProperties(EItemState State) override;
-
 private:
 
 

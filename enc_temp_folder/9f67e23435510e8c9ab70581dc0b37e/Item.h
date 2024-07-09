@@ -65,7 +65,7 @@ protected:
 	void SetActiveStars();
 
 	// sets properties if the item components based on state
-	virtual void SetItemProperties(EItemState State);
+	void SetItemProperties(EItemState State);
 
 
 	// Called when ItemInterpTimer is finished
