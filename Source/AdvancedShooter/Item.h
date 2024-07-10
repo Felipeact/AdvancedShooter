@@ -185,6 +185,8 @@ public:
 
 	FORCEINLINE USoundCue* GetEquipSound() const { return EquipSound; }
 
+	FORCEINLINE int32 GetItemCount() const { return ItemCount; }
+
 
 	//Called from the AShooterCharacter class
 	void StartItemCurve(ASooterCharacter* Char);
