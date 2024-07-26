@@ -10,6 +10,9 @@
 /**
  * 
  */
+
+class USphereComponent;
+
 UCLASS()
 class ADVANCEDSHOOTER_API AAmmo : public AItem
 {
@@ -28,6 +31,12 @@ protected:
 	// override of SetItemProperties so we can set AmmoMesh properties
 	virtual void SetItemProperties(EItemState State) override;
 
+	// Called when overlapping AreaSphere
+	UFUNCTION()
+	void AmmoSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+
+
 private:
 
 
@@ -43,6 +52,10 @@ private:
 	// The texture for the ammo icon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ammo, meta = (AllowPrivateAccess = "true"))
 	UTexture2D* AmmoIconTexture;
+
+	// Overlap sphere for picking up the ammo
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ammo, meta = (AllowPrivateAccess = "true"))
+	USphereComponent* AmmoCollisionSphere;
 
 public:
 

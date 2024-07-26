@@ -544,11 +544,6 @@ void ASooterCharacter::SelectButtonPressed()
 	{
 
 		TraceHitItem->StartItemCurve(this);
-
-		if (TraceHitItem->GetPickUpSound())
-		{
-			UGameplayStatics::PlaySound2D(this, TraceHitItem->GetPickUpSound());
-		}
 		
 	}
 }

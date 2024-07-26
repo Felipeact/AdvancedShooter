@@ -8,6 +8,8 @@
 #include "SooterCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AItem::AItem() :
@@ -296,6 +298,11 @@ void AItem::StartItemCurve(ASooterCharacter* Char)
 {
 	// Store a handle to the character
 	Character = Char;
+
+	if (PickUpSound)
+	{
+		UGameplayStatics::PlaySound2D(this, PickUpSound);
+	}
 
 	// Store initial location of the item
 	ItemInterpStartLocation = GetActorLocation();
