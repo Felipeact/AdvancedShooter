@@ -886,6 +886,33 @@ void ASooterCharacter::InitializeInterpLocations()
 	InterpLocations.Add(InterpLoc6);
 }
 
+int32 ASooterCharacter::GetInterpLocationIndex()
+{
+	int32 LowestIndex = 1;
+	int32 LowestCount = INT_MAX;
+
+	for (int32 i = 1; i < InterpLocations.Num(); i++)
+	{
+		if (InterpLocations[i].ItemCount < LowestCount)
+		{
+			LowestIndex = i;
+			LowestCount = InterpLocations[i].ItemCount;
+		}
+	}
+
+	return LowestIndex;
+}
+
+void ASooterCharacter::IncrementInterpLocItemCount(int32 Index, int32 Amount)
+{
+	if (Amount < -1 || Amount > 1) return;
+
+	if (InterpLocations.Num() >= Index)
+	{
+		InterpLocations[Index].ItemCount += Amount;
+	}
+}
+
 // Called every frame
 void ASooterCharacter::Tick(float DeltaTime)
 {
@@ -961,14 +988,14 @@ void ASooterCharacter::IncrementOverlappedItemCount(int8 Amount)
 
 }
 
-FVector ASooterCharacter::GetCameraInterpLocation()
-{
-	const FVector CameraWorldLocation{ FollowCamera->GetComponentLocation() };
-	const FVector CameraFoward{ FollowCamera->GetForwardVector() };
-
-	// Desired = CameraWorldLocation + Foward * a + Up * B
-	return CameraWorldLocation + CameraFoward * CameraInterpDistance + FVector(0.f, 0.f, CameraInterpElevation);
-}
+//FVector ASooterCharacter::GetCameraInterpLocation()
+//{
+//	const FVector CameraWorldLocation{ FollowCamera->GetComponentLocation() };
+//	const FVector CameraFoward{ FollowCamera->GetForwardVector() };
+//
+//	// Desired = CameraWorldLocation + Foward * a + Up * B
+//	return CameraWorldLocation + CameraFoward * CameraInterpDistance + FVector(0.f, 0.f, CameraInterpElevation);
+//}
 
 void ASooterCharacter::GetPickUpItem(AItem* Item)
 {

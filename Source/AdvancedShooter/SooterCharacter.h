@@ -179,12 +179,16 @@ protected:
 
 	void InitializeInterpLocations();
 
+	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	
 
 private:
 	/* Camera boom positioning the camera behind the character*/
@@ -455,7 +459,9 @@ public:
 	// Adds/subtracts to/from OverlappedItemCount and updates bShouldTraceFor Items
 	void IncrementOverlappedItemCount(int8 Amount);
 
-	FVector GetCameraInterpLocation();
+
+	// No longer needed 
+	//FVector GetCameraInterpLocation();
 
 	void GetPickUpItem(AItem* Item);
 
@@ -463,4 +469,10 @@ public:
 
 	FORCEINLINE bool GetCrouching() const { return bCrouching;  }
 	FInterpLocation GetInterpLocation(int32 Index);
+
+
+	// Returns the index in InterpLocations array with the lowest item count
+	int32 GetInterpLocationIndex();
+
+	void IncrementInterpLocItemCount(int32 Index, int32 Amount);
 };
