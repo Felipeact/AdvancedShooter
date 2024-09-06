@@ -73,7 +73,11 @@ ASooterCharacter::ASooterCharacter() :
 	CrouchingCapsuleHalfHeight(44.f),
 	BaseGroundFriction(2.f),
 	CrouchingGroundFriction(100.f),
-	bAimingButtonPressed(false)
+	bAimingButtonPressed(false),
+	bShouldPlayPickupSound(true),
+	bShouldPlayEquipSound(true),
+	PickupSoundResetTime(0.2f),
+	EquipSoundResetTime(0.2f)
 	
 	
 
@@ -913,6 +917,18 @@ void ASooterCharacter::IncrementInterpLocItemCount(int32 Index, int32 Amount)
 	}
 }
 
+void ASooterCharacter::StartPickupSoundTimer()
+{
+	bShouldPlayPickupSound = false;
+	GetWorldTimerManager().SetTimer(PickupSoundTimer, this, &ASooterCharacter::ResetPickupSoundTimer, PickupSoundResetTime);
+}
+
+void ASooterCharacter::StartEquipSoundTimer()
+{
+	bShouldPlayEquipSound = false;
+	GetWorldTimerManager().SetTimer(EquipSoundTimer, this, &ASooterCharacter::ResetEquipSoundTimer, EquipSoundResetTime);
+}
+
 // Called every frame
 void ASooterCharacter::Tick(float DeltaTime)
 {
@@ -968,6 +984,16 @@ void ASooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASooterCharacter::CrouchButtonPressed);
 }
 
+void ASooterCharacter::ResetPickupSoundTimer()
+{
+	bShouldPlayPickupSound = true;
+}
+
+void ASooterCharacter::ResetEquipSoundTimer()
+{
+	bShouldPlayEquipSound = true;
+}
+
 float ASooterCharacter::GetCrosshairSpreadMultiplier() const
 {
 	return CrosshairSpreadMultiplier;
@@ -1000,10 +1026,7 @@ void ASooterCharacter::IncrementOverlappedItemCount(int8 Amount)
 void ASooterCharacter::GetPickUpItem(AItem* Item)
 {
 
-	if (Item->GetPickUpSound())
-	{
-		UGameplayStatics::PlaySound2D(this, Item->GetEquipSound());
-	}
+	Item->PlayEquipSound();
 
 	AWeapon* Weapon = Cast<AWeapon>(Item);
 
